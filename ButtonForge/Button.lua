@@ -1,7 +1,7 @@
 --[[
     Author: Alternator (Massiner of Nathrezim)
     Copyright 2010
-	
+
 Notes:
 	- Texture retrieval on Spells will not return different state textures for a spell (e.g. Wisp, when a Hunter Aspect is selected)
 	- Texture retrieval on Macros will however return the different state textures - I do not believe this can be leveraged to fix the above
@@ -55,21 +55,21 @@ function Button.New(Parent, ButtonSave, ButtonLocked, TooltipEnabled, MacroText,
 		return;
 	end
 	local NewButton = {};
-	setmetatable(NewButton, Button);		
+	setmetatable(NewButton, Button);
 
 	NewButton.Widget = Button.CreateButtonWidget(Parent);
 	local Name = NewButton.Widget:GetName();
 	NewButton.WIcon 			= _G[Name.."Icon"];
 	NewButton.WNormalTexture 	= _G[Name.."NormalTexture"];
-	NewButton.WCooldown 		= _G[Name.."Cooldown"];	
+	NewButton.WCooldown 		= _G[Name.."Cooldown"];
 	NewButton.WCount 			= _G[Name.."Count"];
 	NewButton.WBorder 			= _G[Name.."Border"];
 	NewButton.WFlashTexture 	= _G[Name.."Flash"];
 	NewButton.WHotKey 			= _G[Name.."HotKey"];
 	NewButton.WName 			= _G[Name.."Name"];
 	NewButton.Widget.ParentButton = NewButton;
-	
-	NewButton.WNormalTexture:SetVertexColor(1.0, 1.0, 1.0, 0.5);	
+
+	NewButton.WNormalTexture:SetVertexColor(1.0, 1.0, 1.0, 0.5);
 	NewButton.WCooldown:SetEdgeTexture("Interface\\Cooldown\\edge");
 	NewButton.WCooldown:SetSwipeColor(0, 0, 0);
 	NewButton.WCooldown:SetHideCountdownNumbers(false);
@@ -78,7 +78,7 @@ function Button.New(Parent, ButtonSave, ButtonLocked, TooltipEnabled, MacroText,
 	NewButton.UpdateTooltip = Button.Empty;
 	NewButton:Configure(Parent, ButtonSave, ButtonLocked, TooltipEnabled, MacroText, KeyBindText);
 	NewButton:SetupActionButtonClick();
-	
+
 	return NewButton;
 end
 
@@ -92,7 +92,7 @@ function Button.CreateButtonWidget(Parent)
 	--Widget:RegisterForClicks("AnyUp");
 	Widget:SetScript("OnReceiveDrag", Button.OnReceiveDrag);
 	Widget:SetScript("OnDragStart", Button.OnDragStart);
-	
+
 	if (Util.ForceOffCastOnKeyDown) then
 		Widget:SetScript("PostClick", Button.PostClickBasic);
 		Widget:SetScript("PreClick", Button.PreClickBasic);
@@ -100,7 +100,7 @@ function Button.CreateButtonWidget(Parent)
 		Widget:SetScript("PostClick", Button.PostClick);
 		Widget:SetScript("PreClick", Button.PreClick);
 	end
-	
+
 	--The ActionButtonTemplate does not include the following (which will be created here)
 	--FloatingBG	(e.g. MultiBarButtonTemplate)
 	local FloatingBG = Widget:CreateTexture(Name.."FloatingBG", "BACKGROUND", nil, -1);
@@ -115,12 +115,12 @@ function Button.CreateButtonWidget(Parent)
 	AutoCastable:SetSize(70, 70);
 	AutoCastable:SetPoint("CENTER", 0, 0);
 	AutoCastable:Hide();
-	
+
 	--AutoCast
 	local Shine = CreateFrame("FRAME", Name.."Shine", Widget, "AutoCastShineTemplate");
 	Shine:SetSize(34, 34);
 	Shine:SetPoint("CENTER", 0, 0);
-	
+
 	--_G[Widget:GetName().."HotKey"]:ClearAllPoints();
 	--_G[Widget:GetName().."HotKey"]:SetPoint("TOPLEFT", Widget, "TOPLEFT", 1, -2);
 	Widget.action = 10000;
@@ -132,15 +132,15 @@ end
 
 function Button:SetupActionButtonClick()
 	local Widget = self.Widget;
-	
+
 	-- This particular setting will only gets set at login (if the player changes it they must log out and back in)
 	if (Util.ForceOffCastOnKeyDown) then
 		Widget:RegisterForClicks("AnyUp");
 		return;
 	end
-	
+
 	SecureClickWrapperFrame:UnwrapScript(Widget, "OnClick");
-	
+
 	if (GetCVarBool("ActionButtonUseKeyDown")) then
 		Widget:RegisterForClicks("AnyUp", "AnyDown");
 		local SecurePreClickSnippet =
@@ -152,57 +152,57 @@ function Button:SetupActionButtonClick()
 			end
 			return false;]];
 		SecureClickWrapperFrame:WrapScript(Widget, "OnClick", SecurePreClickSnippet);
-		
+
 	else
 		Widget:RegisterForClicks("AnyUp");
-		local SecurePreClickSnippet = 
+		local SecurePreClickSnippet =
 			[[if (button == "KeyBind") then
 				return "LeftButton";
 			end]];
 		SecureClickWrapperFrame:WrapScript(Widget, "OnClick", SecurePreClickSnippet);
 	end
-	
+
 end
 
 --[[ Configure the button for use --]]
 function Button:Configure(Parent, ButtonSave, ButtonLocked, TooltipEnabled, MacroText, KeyBindText)
 	self.Widget:SetParent(Parent);
 	self.ButtonSave = ButtonSave;
-	
+
 	local Mode = ButtonSave["Mode"];
 	if (Mode == "spell") then
 		self:SetCommandExplicitSpell(ButtonSave["SpellId"], ButtonSave["SpellNameRank"], ButtonSave["SpellName"], ButtonSave["SpellBook"]);	--the util functions will get both the index and the book
-		
+
 	elseif (Mode == "item") then
 		self:SetCommandExplicitItem(ButtonSave["ItemId"], ButtonSave["ItemName"], ButtonSave["ItemLink"]);
-	
+
 	elseif (Mode == "macro") then
 		self:SetCommandExplicitMacro(ButtonSave["MacroIndex"], ButtonSave["MacroName"], ButtonSave["MacroBody"]);
-		
+
 	--elseif (Mode == "companion") then
 	--	self:SetCommandExplicitCompanion(ButtonSave["CompanionId"], ButtonSave["CompanionType"], ButtonSave["CompanionIndex"], ButtonSave["CompanionName"], ButtonSave["CompanionSpellName"]);
 	elseif (Mode == "mount") then
 		self:SetCommandExplicitCompanion(ButtonSave["MountID"]);
-		
+
 	elseif (Mode == "equipmentset") then
 		self:SetCommandExplicitEquipmentSet(ButtonSave["EquipmentSetId"], ButtonSave["EquipmentSetName"]);
-	
+
 	elseif (Mode == "bonusaction") then
 		self:SetCommandExplicitBonusAction(ButtonSave["BonusActionId"]);
-	
+
 	elseif (Mode == "flyout") then
 		self:SetCommandExplicitFlyout(ButtonSave["FlyoutId"]);
-		
+
 	elseif (Mode == "customaction") then
 		self:SetCommandExplicitCustomAction(ButtonSave["CustomActionName"]);
-	
+
 	elseif (Mode == "battlepet") then
 		self:SetCommandExplicitBattlePet(ButtonSave["BattlePetId"]);
-		
+
 	else
 		self:ClearCommand();
 	end
-	
+
 	if (ButtonForgeSave["RightClickSelfCast"]) then
 		self.Widget:SetAttribute("unit2", "player");
 	else
@@ -279,7 +279,7 @@ function Button:SetKeyBind(Key)
 	if (InCombatLockdown()) then
 		return false;
 	end
-	
+
 	--Each key owns it's own key binding
 	ClearOverrideBindings(self.Widget);
 	if (Key ~= "" and Key ~= nil) then
@@ -311,7 +311,7 @@ function Button:RefreshKeyBindDisplay()
 		--end
 		self.WHotKey:SetVertexColor(0.6, 0.6, 0.6);
 		self.WHotKey:Show();
-		
+
 	else
 		self.WHotKey:SetText(RANGE_INDICATOR);
 		--if not self.WHotKey.__LBF_SetPoint then
@@ -319,7 +319,7 @@ function Button:RefreshKeyBindDisplay()
 			--self.WHotKey:SetPoint("TOPLEFT", self.Widget, "TOPLEFT", 1, -2);
 		--end
 		self.WHotKey:Hide();
-	
+
 	end
 end
 
@@ -331,7 +331,7 @@ function Button:SetOnEnter(Value)
 		self.Widget:SetScript("OnEnter", Button.OnEnterTooltip);
 		self.Widget:SetScript("OnLeave", Button.OnLeaveTooltip);
 	else
-		self.Widget:SetScript("OnEnter", Button.OnEnterFlyout);		
+		self.Widget:SetScript("OnEnter", Button.OnEnterFlyout);
 		self.Widget:SetScript("OnLeave", Button.OnLeaveFlyout);
 	end
 end
@@ -377,7 +377,7 @@ end
 
 
 --[[----------------------------------------------------------------------------------
-		Button Display altering functions (used when reducing cols/rows or hiding 
+		Button Display altering functions (used when reducing cols/rows or hiding
 		such as when the grid is not always on, or the button is deallocated
 ------------------------------------------------------------------------------------]]
 function Button:Fade(Value)
@@ -416,7 +416,7 @@ function Button.PreClickBasic(Widget, Button, Down)
 	if (InCombatLockdown()) then
 		return;
 	end
-	
+
 	local Command, Data, Subvalue, Subsubvalue = GetCursorInfo();
 	if (not Command) then
 		Command, Data, Subvalue, Subsubvalue = UILib.GetDragInfo();
@@ -431,7 +431,7 @@ function Button.PreClick(Widget, Button, Down)
 	if (InCombatLockdown() or Button == "KeyBind" or Down) then
 		return;
 	end
-	
+
 	local Command, Data, Subvalue, Subsubvalue = GetCursorInfo();
 	if (not Command) then
 		Command, Data, Subvalue, Subsubvalue = UILib.GetDragInfo();
@@ -530,9 +530,9 @@ function Button:SetCommandFromTriplet(Command, Data, Subvalue, Subsubvalue)
 	if (InCombatLockdown()) then
 		return false;
 	end
-	
+
 	local OldMode = self.Mode;
-	
+
 	if (Command == "spell") then
 		self:SetCommandSpell(Subsubvalue);  --Data = Index, Subvalue = Book (spell/pet)
 	elseif (Command == "item") then
@@ -556,7 +556,7 @@ function Button:SetCommandFromTriplet(Command, Data, Subvalue, Subsubvalue)
 	else
 		return false;
 	end
-	
+
 	self:FullRefresh();
 	return true;
 end
@@ -611,11 +611,11 @@ function Button:SetCommandExplicitSpell(Id, NameRank, Name, Book)
 	self:SetEnvSpell(Id, NameRank, Name, Book, IsTalent);
 	if (IsTalent) then
 		-- Talents only can be triggered off the name, The API is really random as to when it works better with the name vs ID
-		self:SetAttributes("spell", NameRank);	
+		self:SetAttributes("spell", NameRank);
 	else
 		-- Normal spells work both ways... But! some spells like Shaman Hex() have same name variants, in those cases I need to cast the specific ID
 		-- And yes, as it stands if Blizz do same name variant Talents, then well bugger...
-		self:SetAttributes("spell", Id);	
+		self:SetAttributes("spell", Id);
 	end
 	self:SaveSpell(Id, NameRank, Name, Book);
 end
@@ -663,7 +663,7 @@ end
 
 --[[ The following functions will configure the button to operate correctly for the specific type of action (these functions must be able to handle the player not knowing spells/macros etc) --]]
 function Button:SetEnvSpell(Id, NameRank, Name, Book, IsTalent)
-	self.UpdateTexture 	= Button.Empty;	
+	self.UpdateTexture 	= Button.Empty;
 	self.UpdateChecked 	= Button.UpdateCheckedSpell;
 	self.UpdateEquipped = Button.Empty;
 	self.UpdateCooldown	= Button.UpdateCooldownSpell;
@@ -674,7 +674,7 @@ function Button:SetEnvSpell(Id, NameRank, Name, Book, IsTalent)
 	self.CheckRangeTimer = Button.CheckRangeTimerSpell;
 	self.UpdateFlash	= Button.UpdateFlashSpell;
 	self.UpdateFlyout	= Button.Empty;
-	
+
 	self.GetCursor 		= Button.GetCursorSpell;
 
 	self.FullRefresh 	= Button.FullRefresh;
@@ -682,7 +682,7 @@ function Button:SetEnvSpell(Id, NameRank, Name, Book, IsTalent)
 	local Matched = false;
 	if (Const.WispSpellIds[Id]) then
 		-- This spell may update its icon to the wisp state...
-		self.UpdateTexture = Button.UpdateTextureWispSpell;		
+		self.UpdateTexture = Button.UpdateTextureWispSpell;
 	end
 
 	self.Mode 			= "spell";
@@ -693,7 +693,7 @@ function Button:SetEnvSpell(Id, NameRank, Name, Book, IsTalent)
 	self.SpellIsTalent	= IsTalent;
 	self.Texture 		= GetSpellTexture(Id) or "Interface/Icons/INV_Misc_QuestionMark";
 	self.Target			= "target";
-	
+
 	self:ResetAppearance();
 	self:DisplayActive();
 	Util.AddSpell(self);
@@ -705,24 +705,24 @@ function Button:SetEnvItem(Id, Name, Link)
 	self.UpdateCooldown = Button.UpdateCooldownItem;
 	self.UpdateUsable 	= Button.UpdateUsableItem;
 	self.UpdateTextCount = Button.UpdateTextCountItem;
-	self.UpdateTooltipFunc 	= Button.UpdateTooltipItem;	
+	self.UpdateTooltipFunc 	= Button.UpdateTooltipItem;
 	self.UpdateRangeTimer = Button.UpdateRangeTimerItem;
 	self.CheckRangeTimer = Button.CheckRangeTimerItem;
 	self.UpdateFlash	= Button.Empty;
 	self.UpdateFlyout	= Button.Empty;
-	
+
 	self.GetCursor 		= Button.GetCursorItem;
 
 
 	self.FullRefresh 	= Button.FullRefresh;
-	
+
 	self.Mode 			= "item";
 	self.ItemId 		= Id;
 	self.ItemName 		= Name;
 	self.ItemLink 		= Link;
 	self.Texture		= GetItemIcon(Id) or "Interface/Icons/INV_Misc_QuestionMark";				--safe no matter what
 	self.Target			= "target";
-	
+
 	self:ResetAppearance();
 	self:DisplayActive();
 	Util.AddItem(self);
@@ -733,7 +733,7 @@ function Button:SetEnvMacro(Index, Name, Body)
 	self.UpdateEquipped = Button.UpdateEquippedMacro;
 	self.UpdateCooldown	= Button.UpdateCooldownMacro;
 	self.UpdateUsable 	= Button.UpdateUsableMacro;
-	self.UpdateTextCount = Button.UpdateTextCountMacro;	
+	self.UpdateTextCount = Button.UpdateTextCountMacro;
 	self.UpdateTooltipFunc	 	= Button.UpdateTooltipMacro;
 	self.UpdateRangeTimer = Button.UpdateRangeTimerMacro;
 	self.CheckRangeTimer = Button.CheckRangeTimerMacro;
@@ -743,7 +743,7 @@ function Button:SetEnvMacro(Index, Name, Body)
 	self.UpdateFlyout	= Button.Empty;
 
 	self.FullRefresh 	= Button.FullRefreshMacro;
-	
+
 	self.Mode 			= "macro";
 	self.MacroIndex 	= Index;
 	self.MacroName 		= Name;
@@ -751,7 +751,7 @@ function Button:SetEnvMacro(Index, Name, Body)
 	self.Texture		= nil;	--set in translate macro
 	self.Target			= "target";
 	self.ShowTooltip	= string.find(Body, "#showtooltip") ~= nil;
-	
+
 	self:ResetAppearance();
 	self:DisplayActive();
 
@@ -775,7 +775,7 @@ function Button:SetEnvCompanion(MountID)
 			Index = Util.GetMountIndexFromSpellID(SpellID);
 		end
 	end--]]
-	
+
 	--[[if (Index == nil) then
 		-- So no mount was found
 		self:ClearCommand();
@@ -787,7 +787,7 @@ function Button:SetEnvCompanion(MountID)
 
 		--self:SetMountFavorite(BFButton);
 		--return;
-	--end	
+	--end
 	self.Widget:SetAttribute("type", nil);
 	self.Widget:SetAttribute("spell", nil);
 	self.Widget:SetAttribute("item", nil);
@@ -797,14 +797,14 @@ function Button:SetEnvCompanion(MountID)
 	self.Widget:SetAttribute("id", nil);
 	self.Mode			= "mount";
 	self.MountID		= MountID;
-	
+
 	if (self.MountID == Const.SUMMON_RANDOM_FAVORITE_MOUNT_ID) then
 		self.MountName		= GetSpellInfo(Const.SUMMON_RANDOM_FAVORITE_MOUNT_SPELL);
 		self.MountSpellID	= Const.SUMMON_RANDOM_FAVORITE_MOUNT_SPELL;
 		self.MountSpellName = self.MountName;
-	
 
-		
+
+
 		if (ButtonForgeGlobalSettings["UseCollectionsFavoriteMountButton"] and not IsAddOnLoaded("Blizzard_Collections")) then
 			LoadAddOn("Blizzard_Collections");
 		end
@@ -825,12 +825,12 @@ function Button:SetEnvCompanion(MountID)
 		self.Widget:SetAttribute("macrotext", "/cast "..self.MountSpellName);
 	end
 
-	
+
 	self.Texture	= GetSpellTexture(self.MountSpellID);		--select(3, C_MountJournal.GetDisplayedMountInfo(Index));
 
 
 	self.UpdateTexture 	= Button.Empty;
-	self.UpdateChecked 	= Button.UpdateCheckedCompanion;	
+	self.UpdateChecked 	= Button.UpdateCheckedCompanion;
 	self.UpdateEquipped = Button.Empty;
 	self.UpdateCooldown	= Button.UpdateCooldownCompanion;
 	self.UpdateUsable 	= Button.UpdateUsableCompanion;
@@ -840,11 +840,11 @@ function Button:SetEnvCompanion(MountID)
 	self.CheckRangeTimer = Button.Empty;
 	self.UpdateFlash	= Button.Empty;
 	self.UpdateFlyout	= Button.Empty;
-	
+
 	self.GetCursor 		= Button.GetCursorCompanion;
 
 	self.FullRefresh 	= Button.FullRefresh;
-	
+
 	--[[self.Mode 				= "companion";
 	self.CompanionId 		= Id;
 	self.CompanionType 		= Type;
@@ -854,7 +854,7 @@ function Button:SetEnvCompanion(MountID)
 	self.Texture 			= select(4, GetCompanionInfo(Type, Index));		--safe provided Type in ("MOUNT", "CRITTER") and Index is numeric
 	]]
 	self.Target			= "target";
-	
+
 	self:ResetAppearance();
 	self:DisplayActive();
 	self:SaveCompanion(MountID, self.MountSpellID, self.MountName);
@@ -878,17 +878,17 @@ function Button:SetEnvEquipmentSet(Id, Name)
 	self.CheckRangeTimer = Button.Empty;
 	self.UpdateFlash	= Button.Empty;
 	self.UpdateFlyout	= Button.Empty;
-	
+
 	self.GetCursor 		= Button.GetCursorEquipmentSet;
 
 	self.FullRefresh 	= Button.FullRefresh;
-	
+
 	self.Mode 			= "equipmentset";
 	self.EquipmentSetId	= Id;
 	self.EquipmentSetName 	= Name;
 	self.Texture 		= select(2, GetEquipmentSetInfo(Index)) or ""; --"Interface/Icons/"..(GetEquipmentSetInfoByName(Name) or "");	--safe provided Name ~= nil
 	self.Target			= "target";
-	
+
 	self:ResetAppearance();
 	self:DisplayActive();
 	self.WName:SetText(Name);
@@ -905,11 +905,11 @@ function Button:SetEnvBonusAction(Id)
 	self.CheckRangeTimer = Button.CheckRangeTimerBonusAction;
 	self.UpdateFlash	= Button.UpdateFlashBonusAction;
 	self.UpdateFlyout	= Button.Empty;
-	
+
 	self.GetCursor 		= Button.GetCursorBonusAction;
 
 	self.FullRefresh 	= Button.FullRefresh;
-	
+
 	self.Mode 			= "bonusaction";
 	self.BonusActionId	= Id;
 	self.BonusActionSlot = Id + 132;
@@ -932,11 +932,11 @@ function Button:SetEnvFlyout(Id)
 	self.CheckRangeTimer = Button.Empty;
 	self.UpdateFlash	= Button.Empty;
 	self.UpdateFlyout	= Button.UpdateFlyout;
-	
+
 	self.GetCursor 		= Button.GetCursorFlyout;
 
 	self.FullRefresh 	= Button.FullRefresh;
-	
+
 	self.Mode 			= "flyout";
 	self.FlyoutId		= Id;
 	local ind, booktype = Util.LookupSpellIndex("FLYOUT"..Id);
@@ -950,8 +950,8 @@ function Button:SetEnvFlyout(Id)
 	self:ResetAppearance();
 	self:DisplayActive();
 	self:UpdateFlyout();
-	
-	
+
+
 --	BFFlyoutWrapperFrame:WrapScript(SpellFlyout, "OnShow", [[return true, "true";]], [[owner:CallMethod("RefreshFlyouts");]]);
 	--BFFlyoutWrapperFrame:WrapScript(SpellFlyout, "OnHide", [[return true, "true";]], [[owner:CallMethod("RefreshFlyouts");]]);
 end
@@ -968,23 +968,23 @@ function Button:SetEnvCustomAction(Name)
 	self.CheckRangeTimer = Button.Empty;
 	self.UpdateFlash	= Button.Empty;
 	self.UpdateFlyout	= Button.Empty;
-	
+
 	self.GetCursor 		= Button.GetCursorCustomAction;
 
 	self.FullRefresh 	= Button.FullRefresh;
-	
+
 	self.Mode 			= "customaction";
 	self.CustomActionName	= Name;
 	self.Texture, TexCoords	= CustomAction.GetTexture(Name);
 	self.Target			= "target";
-	
+
 	self:ResetAppearance();
 	self:DisplayActive(TexCoords);
 	Util.AddBonusAction(self);
 end
 function Button:SetEnvBattlePet(Id)
 	self.UpdateTexture 	= Button.Empty;
-	self.UpdateChecked 	= Button.UpdateCheckedBattlePet;	
+	self.UpdateChecked 	= Button.UpdateCheckedBattlePet;
 	self.UpdateEquipped = Button.Empty;
 	self.UpdateCooldown	= Button.UpdateCooldownBattlePet;
 	self.UpdateUsable 	= Button.UpdateUsableBattlePet;
@@ -994,16 +994,16 @@ function Button:SetEnvBattlePet(Id)
 	self.CheckRangeTimer = Button.Empty;
 	self.UpdateFlash	= Button.Empty;
 	self.UpdateFlyout	= Button.Empty;
-	
+
 	self.GetCursor 		= Button.GetCursorBattlePet;
 
 	self.FullRefresh 	= Button.FullRefresh;
-	
+
 	self.Mode 				= "battlepet";
 	self.BattlePetId 			= Id;
 	self.Texture 			= select(9, C_PetJournal.GetPetInfoByPetID(Id));
 	self.Target			= "target";
-	
+
 	self:ResetAppearance();
 	self:DisplayActive();
 end
@@ -1019,11 +1019,11 @@ function Button:SetEnvClear()
 	self.CheckRangeTimer = Button.Empty;
 	self.UpdateFlash	= Button.Empty;
 	self.UpdateFlyout	= Button.Empty;
-	
+
 	self.GetCursor 		= Button.Empty;
 
 	self.FullRefresh 	= Button.Empty;
-	
+
 	self.Mode			= nil;
 
 	self:ResetAppearance();
@@ -1129,16 +1129,16 @@ function Button:SetAttributes(Type, Value)
 	self.Widget:SetAttribute("action", nil);
 	self.Widget:SetAttribute("clickbutton", nil);
 	self.Widget:SetAttribute("id", nil);
-	
+
 	--Now if a valid type is passed in set it
 	if (Type == "spell" or Type == "item" or Type == "macro") then
 		self.Widget:SetAttribute("type", Type);
 		self.Widget:SetAttribute(Type, Value);
-		
+
 	elseif (Type == "companion") then
 		self.Widget:SetAttribute("type", "spell");
 		self.Widget:SetAttribute("spell", Value);
-		
+
 	elseif (Type == "equipmentset") then
 		self.Widget:SetAttribute("type", "macro");
 		self.Widget:SetAttribute("macrotext", "/equipset "..Value);
@@ -1170,12 +1170,12 @@ end
 ----------------------------------------------------------------------------]]
 function Button:ResetAppearance()
 	self.Widget:SetChecked(false);
-	
+
 	self.WBorder:Hide();
-	
+
 	Util.CooldownFrame_SetTimer(self.WCooldown, 0, 0, 0);
 	self.WCooldown:Hide();
-	
+
 	self.WIcon:SetAlpha(1);
 	self.WIcon:SetVertexColor(1.0, 1.0, 1.0);
 	self.WIcon:SetTexCoord(0, 1, 0, 1);
@@ -1214,8 +1214,8 @@ function Button:FullRefresh()
 	self:UpdateFlash();
 	self:UpdateFlyout();
 	self:UpdateGlow();
-	
-	self:UpdateTooltip();	
+
+	self:UpdateTooltip();
 
 end
 
@@ -1293,8 +1293,8 @@ function Button:UnitBuffBySpell(unit, spell)
 	  if name then
 		if name == spell then
 			return UnitBuff(unit,i);
-		end    
-	  else 
+		end
+	  else
 		break;
 	  end;
 	end;
@@ -1337,7 +1337,7 @@ end
 
 function Button:DisplayActive(TexCoords)
 	local Icon = self.WIcon;
-	
+
 	Icon:SetTexture(self.Texture);
 	self.Widget:SetNormalTexture("Interface/Buttons/UI-Quickslot2");
 	if (TexCoords) then
@@ -1347,7 +1347,7 @@ function Button:DisplayActive(TexCoords)
 	end
 	Icon:SetVertexColor(1.0, 1.0, 1.0, 1.0);
 	Icon:Show();
-	
+
 end
 function Button:DisplayMissing()
 	local Icon = self.WIcon;
@@ -1361,7 +1361,7 @@ end
 function Button:DisplayEmpty()
 	self.WIcon:Hide();
 	--self.Widget:SetNormalTexture("Interface/Buttons/UI-Quickslot");
-	self.WCooldown:Hide();	
+	self.WCooldown:Hide();
 end
 
 
@@ -1391,11 +1391,11 @@ function Button:UpdateCheckedItem()
 end
 function Button:UpdateCheckedMacro()
 	if (self.MacroMode == "spell") then
-		self:UpdateCheckedSpell();	
+		self:UpdateCheckedSpell();
 	elseif (self.MacroMode == "item") then
-		self:UpdateCheckedItem();	
+		self:UpdateCheckedItem();
 	elseif (self.MacroMode == "companion") then
-		self:UpdateCheckedCompanion();	
+		self:UpdateCheckedCompanion();
 	else
 		self.Widget:SetChecked(false);
 	end
@@ -1486,11 +1486,11 @@ function Button:UpdateCooldownItem()
 end
 function Button:UpdateCooldownMacro()
 	if (self.MacroMode == "spell") then
-		self:UpdateCooldownSpell();	
+		self:UpdateCooldownSpell();
 	elseif (self.MacroMode == "item") then
-		self:UpdateCooldownItem();	
+		self:UpdateCooldownItem();
 	elseif (self.MacroMode == "companion") then
-		self:UpdateCooldownCompanion();	
+		self:UpdateCooldownCompanion();
 	else
 		Util.CooldownFrame_SetTimer(self.WCooldown, 0, 0, 0);
 		self.WCooldown:Hide();
@@ -1552,7 +1552,7 @@ function Button:UpdateUsableMacro()
 	if (self.MacroMode == "spell") then
 		self:UpdateUsableSpell();
 	elseif (self.MacroMode == "item") then
-		self:UpdateUsableItem();	
+		self:UpdateUsableItem();
 	elseif (self.MacroMode == "companion") then
 		self:UpdateUsableCompanion();
 	else
@@ -1645,7 +1645,7 @@ function Button:UpdateTextCountMacro()
 	else
 		self.WCount:SetText("");
 	end
-	
+
 	if (self.WCount:GetText() == nil and self.MacroTextEnabled) then
 		self.WName:SetText(self.MacroName);
 	else
@@ -1691,6 +1691,9 @@ function Button:UpdateTooltipItem()
 		local Bag, BagSlot = Util.LookupItemIdBagSlot(self.ItemId);
 		if (Bag ~= nil) then
 			GameTooltip:SetBagItem(Bag, BagSlot);
+        elseif (PlayerHasToy(self.ItemId)) then
+            GameTooltip_SetDefaultAnchor(GameTooltip, self.Widget);
+            GameTooltip:SetToyByItemID(self.ItemId);
 		else
 			GameTooltip_SetDefaultAnchor(GameTooltip, self.Widget);		--It appears that the sethyperlink (specifically this one) requires that the anchor be constantly refreshed!?
 			GameTooltip:SetHyperlink(self.ItemLink);
@@ -1763,8 +1766,8 @@ end
 function Button:UpdateTooltipBattlePet()
 	self = self.ParentButton or self;	--This is a sneaky cheat incase the widget was used to get here...
 	local speciesID, customName, level, xp, maxXp, displayID, isFavorite
-		, name = C_PetJournal.GetPetInfoByPetID(self.BattlePetId);		
-		
+		, name = C_PetJournal.GetPetInfoByPetID(self.BattlePetId);
+
 	if ( customName or name ) then
 		GameTooltip:SetText(customName or name, 1, 1, 1);
 		GameTooltip:AddLine(SPELL_CAST_TIME_INSTANT, 1, 1, 1, true);
@@ -1870,7 +1873,7 @@ end
 		Range Timer functions
 --------------------------------------------------------------------------]]
 function Button:UpdateRangeTimer()
-	
+
 end
 function Button:UpdateRangeTimerSpell()
 	if (IsSpellInRange(self.SpellNameRank, self.Target)) then
@@ -1974,28 +1977,28 @@ function Button:RefreshMacro()
 	if (InCombatLockdown()) then
 		return;
 	end
-	if (self.Mode == "macro") then	
+	if (self.Mode == "macro") then
 		local TrimBody = strtrim(self.MacroBody or '');
 		local AccMacros, CharMacros = GetNumMacros();
 		local BodyIndex = 0;
-		
+
 		--Shallow Checking - Full Affinity
 		local Name, Icon, Body = GetMacroInfo(self.MacroIndex);
 		if (TrimBody == strtrim(Body or '') and self.MacroName == Name) then
 			self:SetCommandMacro(self.MacroIndex);
 			self:FullRefresh();
-			return;		
+			return;
 		end
-		
+
 		if (Util.IncBetween(self.MacroIndex - 1, 1, AccMacros) or Util.IncBetween(self.MacroIndex - 1, MAX_ACCOUNT_MACROS + 1, MAX_ACCOUNT_MACROS + CharMacros)) then
 			Name, Icon, Body = GetMacroInfo(self.MacroIndex - 1);
 			if (TrimBody == strtrim(Body or '') and self.MacroName == Name) then
 			self:SetCommandMacro(self.MacroIndex - 1);
 			self:FullRefresh();
-			return;				
+			return;
 			end
 		end
-		
+
 		if (Util.IncBetween(self.MacroIndex + 1, 1, AccMacros) or Util.IncBetween(self.MacroIndex + 1, MAX_ACCOUNT_MACROS + 1, MAX_ACCOUNT_MACROS + CharMacros)) then
 			Name, Icon, Body = GetMacroInfo(self.MacroIndex + 1);
 			if (TrimBody == strtrim(Body or '') and self.MacroName == Name) then
@@ -2004,7 +2007,7 @@ function Button:RefreshMacro()
 				return;
 			end
 		end
-		
+
 		--Scan Checking - Full Affinity
 		for i = 1, AccMacros do
 			Name, Icon, Body = GetMacroInfo(i);
@@ -2014,7 +2017,7 @@ function Button:RefreshMacro()
 				self:FullRefresh();
 				return;
 			end
-			
+
 			if (TrimBody == Body and Body ~= nil and Body ~= "") then
 				BodyIndex = i;
 			end
@@ -2027,7 +2030,7 @@ function Button:RefreshMacro()
 				self:FullRefresh();
 				return;
 			end
-			
+
 			if (TrimBody == Body and Body ~= nil and Body ~= "") then
 				BodyIndex = i;
 			end
@@ -2040,7 +2043,7 @@ function Button:RefreshMacro()
 				self:FullRefresh();
 				return;
 			end
-			
+
 			--Low Scan - Name Affinity (the macro should not have moved if the body changed)
 			Name = GetMacroInfo(self.MacroIndex);
 			if (self.MacroName == Name) then
@@ -2049,7 +2052,7 @@ function Button:RefreshMacro()
 				return;
 			end
 		end
-		
+
 		--Not Found - Clear Macro?
 		if (ButtonForgeGlobalSettings["RemoveMissingMacros"] and Util.MacroCheckDelayComplete) then
 			self:ClearCommand();
@@ -2060,7 +2063,7 @@ end
 
 
 --[[
-		
+
 --]]
 function Button:PromoteSpell()
 	if (InCombatLockdown()) then
@@ -2156,7 +2159,7 @@ function Button:UpdateFlyout()
 			Widget.FlyoutBorderShadow:Hide();
 			arrowDistance = 2;
 		end
-		
+
 		-- Update arrow
 		Widget.FlyoutArrow:Show();
 		Widget.FlyoutArrow:ClearAllPoints();
