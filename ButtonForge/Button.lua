@@ -589,7 +589,7 @@ function Button:SetCommandCompanion(MountID)
 	self:SetCommandExplicitCompanion(MountID);
 end
 function Button:SetCommandEquipmentSet(Name)
-	local Id = select(2, GetEquipmentSetInfoByName(Name));	--Id isn't really used, but since it is available and appears reliable (i.e. doesn't change??) I will store it away just in case
+	local Id = C_EquipmentSet.GetEquipmentSetID(Name);
 	self:SetCommandExplicitEquipmentSet(Id, Name);
 end
 function Button:SetCommandBonusAction(Id)
@@ -886,7 +886,7 @@ function Button:SetEnvEquipmentSet(Id, Name)
 	self.Mode 			= "equipmentset";
 	self.EquipmentSetId	= Id;
 	self.EquipmentSetName 	= Name;
-	self.Texture 		= select(2, GetEquipmentSetInfo(Index)) or ""; --"Interface/Icons/"..(GetEquipmentSetInfoByName(Name) or "");	--safe provided Name ~= nil
+	self.Texture 		= select(2, C_EquipmentSet.GetEquipmentSetInfo(Index)) or ""; --"Interface/Icons/"..(GetEquipmentSetInfoByName(Name) or "");	--safe provided Name ~= nil
 	self.Target			= "target";
 
 	self:ResetAppearance();
@@ -2129,7 +2129,7 @@ function Button:RefreshEquipmentSet()
 			-- This equip set is gone so clear it from the button
 			return self:ClearCommand();
 		end
-		local TextureName = select(2, GetEquipmentSetInfo(Index));
+		local TextureName = select(2, C_EquipmentSet.GetEquipmentSetInfo(Index));
 		if (TextureName) then
 			self.Texture = TextureName;
 			self:DisplayActive();

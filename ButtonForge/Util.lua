@@ -1,7 +1,7 @@
 --[[
     Author: Alternator (Massiner of Nathrezim)
     Copyright 2010
-	
+
 	Notes:
 ]]
 
@@ -88,7 +88,7 @@ end
 	Make sure that the saved data is kept inline with the version being run
 --]]
 function Util.UpdateSavedData()
-	
+
 	---- FIX for MACS, if character data hasn't loaded but is otherwise available in the global save ----
 	local CharRealm = UnitName("player");
 	CharRealm = CharRealm.."-"..GetRealmName();
@@ -97,10 +97,10 @@ function Util.UpdateSavedData()
 		and ButtonForgeGlobalBackup[CharRealm] ~= nil) then
 		ButtonForgeSave = ButtonForgeGlobalBackup[CharRealm];
 	end
-	
-	
+
+
 	------The following section updates the per character saved data------
-	
+
 	--Need to allocate save structure
 	if (not ButtonForgeSave) then
 		--Swap v0.9.0 / v0.9.1 / v0.9.2 users to the new save structure
@@ -120,7 +120,7 @@ function Util.UpdateSavedData()
 		end
 		ButtonForgeSave["AddonName"] = "Button Forge";
 	end
-	
+
 	--v0.9.3 update
 	if (ButtonForgeSave["Version"] == 0.9 and ButtonForgeSave["VersionMinor"] < 3) then
 		for i = 1, #ButtonForgeSave.Bars do
@@ -129,7 +129,7 @@ function Util.UpdateSavedData()
 		ButtonForgeSave["VersionMinor"] = 3;
 		DEFAULT_CHAT_FRAME:AddMessage(Util.GetLocaleString("UpgradedChatMsg").."v0.9.3", .5, 1, 0, 1);
 	end
-	
+
 	--v0.9.12 update
 	if (ButtonForgeSave["Version"] == 0.9 and ButtonForgeSave["VersionMinor"] < 12) then
 		for i = 1, #ButtonForgeSave.Bars do
@@ -139,7 +139,7 @@ function Util.UpdateSavedData()
 		ButtonForgeSave["VersionMinor"] = 12;
 		DEFAULT_CHAT_FRAME:AddMessage(Util.GetLocaleString("UpgradedChatMsg").."v0.9.12", .5, 1, 0, 1);
 	end
-	
+
 	--v0.9.13 update
 	if (ButtonForgeSave["Version"] == 0.9 and ButtonForgeSave["VersionMinor"] < 13) then
 		for i = 1, #ButtonForgeSave.Bars do
@@ -149,8 +149,8 @@ function Util.UpdateSavedData()
 		ButtonForgeSave["VersionMinor"] = 13;
 		DEFAULT_CHAT_FRAME:AddMessage(Util.GetLocaleString("UpgradedChatMsg").."v0.9.13", .5, 1, 0, 1);
 	end
-	
-	
+
+
 	--v0.9.17 update
 	if (ButtonForgeSave["Version"] == 0.9 and ButtonForgeSave["VersionMinor"] < 17) then
 		for i = 1, #ButtonForgeSave.Bars do
@@ -160,7 +160,7 @@ function Util.UpdateSavedData()
 		ButtonForgeSave["VersionMinor"] = 17;
 		DEFAULT_CHAT_FRAME:AddMessage(Util.GetLocaleString("UpgradedChatMsg").."v0.9.17", .5, 1, 0, 1);
 	end
-	
+
 	--v0.9.22 update
 	if (ButtonForgeSave["Version"] == 0.9 and ButtonForgeSave["VersionMinor"] < 22) then
 		for i = 1, #ButtonForgeSave.Bars do
@@ -171,7 +171,7 @@ function Util.UpdateSavedData()
 		ButtonForgeSave["VersionMinor"] = 22;
 		DEFAULT_CHAT_FRAME:AddMessage(Util.GetLocaleString("UpgradedChatMsg").."v0.9.22", .5, 1, 0, 1);
 	end
-	
+
 	--v0.9.25 update
 	if (ButtonForgeSave["Version"] == 0.9 and ButtonForgeSave["VersionMinor"] < 25) then
 		for i = 1, #ButtonForgeSave.Bars do
@@ -180,7 +180,7 @@ function Util.UpdateSavedData()
 		ButtonForgeSave["VersionMinor"] = 25;
 		DEFAULT_CHAT_FRAME:AddMessage(Util.GetLocaleString("UpgradedChatMsg").."v0.9.25", .5, 1, 0, 1);
 	end
-	
+
 	-- v0.9.34 update
 	if (ButtonForgeSave["Version"] == 0.9 and ButtonForgeSave["VersionMinor"] < 34) then
 		for i = 1, #ButtonForgeSave.Bars do
@@ -189,13 +189,13 @@ function Util.UpdateSavedData()
 		ButtonForgeSave["VersionMinor"] = 34;
 		DEFAULT_CHAT_FRAME:AddMessage(Util.GetLocaleString("UpgradedChatMsg").."v0.9.34", .5, 1, 0, 1);
 	end
-	
+
 	-- v0.9.36 update
 	if (ButtonForgeSave["Version"] == 0.9 and ButtonForgeSave["VersionMinor"] < 36) then
 		for i = 1, #ButtonForgeSave.Bars do
 			Util.UpdateBattlePets602(ButtonForgeSave.Bars[i].Buttons);
 		end
-		
+
 		if (ButtonForgeSave.UndoProfileBars ~= nil) then
 			for i = 1, #ButtonForgeSave.UndoProfileBars do
 				Util.UpdateMounts602(ButtonForgeSave.UndoProfileBars[i].Buttons);
@@ -205,13 +205,13 @@ function Util.UpdateSavedData()
 		ButtonForgeSave["VersionMinor"] = 36;
 		DEFAULT_CHAT_FRAME:AddMessage(Util.GetLocaleString("UpgradedChatMsg").."v0.9.36", .5, 1, 0, 1);
 	end
-	
+
 	-- v0.9.41 update
 	if (ButtonForgeSave["Version"] == 0.9 and ButtonForgeSave["VersionMinor"] < 41) then
 		for i = 1, #ButtonForgeSave.Bars do
 			Util.UpdateMounts700(ButtonForgeSave.Bars[i].Buttons);
 		end
-		
+
 		if (ButtonForgeSave.UndoProfileBars ~= nil) then
 			for i = 1, #ButtonForgeSave.UndoProfileBars do
 				Util.UpdateMounts700(ButtonForgeSave.UndoProfileBars[i].Buttons);
@@ -220,14 +220,14 @@ function Util.UpdateSavedData()
 		ButtonForgeSave["VersionMinor"] = 41;
 		DEFAULT_CHAT_FRAME:AddMessage(Util.GetLocaleString("UpgradedChatMsg").."v0.9.41", .5, 1, 0, 1);
 	end
-	
+
 	-- v0.9.42 update
 	if (ButtonForgeSave["Version"] == 0.9 and ButtonForgeSave["VersionMinor"] < 42) then
 		for i = 1, #ButtonForgeSave.Bars do
 			ButtonForgeSave.Bars[i].HSpec3 = false;
 			ButtonForgeSave.Bars[i].HSpec4 = false;
 		end
-		
+
 		if (ButtonForgeSave.UndoProfileBars ~= nil) then
 			for i = 1, #ButtonForgeSave.UndoProfileBars do
 				ButtonForgeSave.UndoProfileBars[i].HSpec3 = false;
@@ -237,13 +237,13 @@ function Util.UpdateSavedData()
 		ButtonForgeSave["VersionMinor"] = 42;
 		DEFAULT_CHAT_FRAME:AddMessage(Util.GetLocaleString("UpgradedChatMsg").."v0.9.42", .5, 1, 0, 1);
 	end
-	
+
 	-- v0.9.44 update
 	if (ButtonForgeSave["Version"] == 0.9 and ButtonForgeSave["VersionMinor"] < 44) then
 		for i = 1, #ButtonForgeSave.Bars do
 			Util.RemoveCancelPossession700(ButtonForgeSave.Bars[i].Buttons);
 		end
-		
+
 		if (ButtonForgeSave.UndoProfileBars ~= nil) then
 			for i = 1, #ButtonForgeSave.UndoProfileBars do
 				Util.RemoveCancelPossession700(ButtonForgeSave.UndoProfileBars[i].Buttons);
@@ -252,8 +252,8 @@ function Util.UpdateSavedData()
 		ButtonForgeSave["VersionMinor"] = 44;
 		DEFAULT_CHAT_FRAME:AddMessage(Util.GetLocaleString("UpgradedChatMsg").."v0.9.44", .5, 1, 0, 1);
 	end
-		
-	
+
+
 
 	--Bring v up to the latest version
 	if (ButtonForgeSave["Version"] < Const.Version) then
@@ -264,8 +264,8 @@ function Util.UpdateSavedData()
 		ButtonForgeSave["VersionMinor"] = Const.VersionMinor;
 		DEFAULT_CHAT_FRAME:AddMessage(Util.GetLocaleString("UpgradedChatMsg").."v"..Const.Version.."."..Const.VersionMinor, .5, 1, 0, 1);
 	end
-	
-	
+
+
 	-----This section updates the global button forge data (introduced at 0.9.16)
 	if (not ButtonForgeGlobalSettings) then
 		ButtonForgeGlobalSettings = {};
@@ -274,24 +274,24 @@ function Util.UpdateSavedData()
 		ButtonForgeGlobalSettings["MacroCheckDelay"] = 3;
 		ButtonForgeGlobalSettings["RemoveMissingMacros"] = true;
 	end
-	
+
 	--v0.9.30 update (to global settings)
 	if (ButtonForgeGlobalSettings["Version"] == 0.9 and ButtonForgeGlobalSettings["VersionMinor"] < 30) then
 		ButtonForgeGlobalSettings["ForceOffCastOnKeyDown"] = false;
 		ButtonForgeGlobalSettings["VersionMinor"] = 30;
 	end
-	
+
 	--v0.9.31 update (to global profiles)
 	if (ButtonForgeGlobalSettings["Version"] == 0.9 and ButtonForgeGlobalSettings["VersionMinor"] < 31) then
 		ButtonForgeGlobalProfiles = {};
 		ButtonForgeGlobalSettings["VersionMinor"] = 31;
 	end
-	
+
 	--pre v0.9.36 Safety process
 	if (not ButtonForgeGlobalProfiles) then
 		ButtonForgeGlobalProfiles = {};
 	end
-	
+
 	--v0.9.36 update
 	if (ButtonForgeGlobalSettings["Version"] == 0.9 and ButtonForgeGlobalSettings["VersionMinor"] < 36) then
 		for k,v in pairs(ButtonForgeGlobalProfiles) do
@@ -302,12 +302,12 @@ function Util.UpdateSavedData()
 		end
 		ButtonForgeGlobalSettings["VersionMinor"] = 36;
 	end
-	
+
 	--v0.9.38 update
 	if (ButtonForgeGlobalBackup == nil) then
 		ButtonForgeGlobalBackup = {};
 	end
-	
+
 	-- v0.9.41
 	if (ButtonForgeGlobalSettings["Version"] == 0.9 and ButtonForgeGlobalSettings["VersionMinor"] < 41) then
 		for k, v in pairs(ButtonForgeGlobalProfiles) do
@@ -317,7 +317,7 @@ function Util.UpdateSavedData()
 		end
 		ButtonForgeGlobalSettings["VersionMinor"] = 41;
 	end
-	
+
 	-- v0.9.42
 	if (ButtonForgeGlobalSettings["Version"] == 0.9 and ButtonForgeGlobalSettings["VersionMinor"] < 42) then
 		for k, v in pairs(ButtonForgeGlobalProfiles) do
@@ -328,23 +328,23 @@ function Util.UpdateSavedData()
 		end
 		ButtonForgeGlobalSettings["VersionMinor"] = 42;
 	end
-	
+
 	-- v0.9.44
 	if (ButtonForgeGlobalSettings["Version"] == 0.9 and ButtonForgeGlobalSettings["VersionMinor"] < 44) then
 		ButtonForgeGlobalSettings["UseCollectionsFavoriteMountButton"] = not AreDangerousScriptsAllowed();
 		ButtonForgeGlobalSettings["VersionMinor"] = 44;
-		
+
 		for k, v in pairs(ButtonForgeGlobalProfiles) do
 			for i = 1, #v.Bars do
 				Util.RemoveCancelPossession700(v.Bars[i].Buttons);
 			end
 		end
 	end
-	
-	
 
 
-	
+
+
+
 	--Bring the global settings up to the latest version
 	if (ButtonForgeGlobalSettings["Version"] < Const.Version) then
 		ButtonForgeGlobalSettings["Version"] = Const.Version;
@@ -361,7 +361,7 @@ function Util.UpdateMounts602(Buttons)
 		if (Buttons[j]["Mode"] == "companion") then
 			-- Either fix the mapping, or clear the mount
 			local MountID = Util.GetMountIDFromName(Buttons[j]["CompanionName"]);
-			
+
 			Buttons[j]["Mode"] = nil;
 			Buttons[j]["CompanionId"]		= nil;
 			Buttons[j]["CompanionType"]	= nil;
@@ -390,7 +390,7 @@ function Util.UpdateMounts700(Buttons)
 		if (Buttons[j]["Mode"] == "mount") then
 			local MountIndex = Buttons[j]["MountIndex"];
 			local MountName = Buttons[j]["MountName"];
-			
+
 			Buttons[j]["MountID"]		= nil;
 			Buttons[j]["MountSpellID"]	= nil;
 			Buttons[j]["MountName"]		= nil;
@@ -422,7 +422,7 @@ end
 		Load the bars and buttons from the saved addon values
 --]]
 function Util.Load()
-	
+
 	local CharRealm = UnitName("player");
 	CharRealm = CharRealm.."-"..GetRealmName();
 	ButtonForgeGlobalBackup[CharRealm] = ButtonForgeSave;
@@ -447,7 +447,7 @@ function Util.Load()
 	Util.Loaded = true;
 	Util.StartMacroCheckDelay();
 	Util.RefreshOnUpdateFunction();
-	
+
 	SLASH_BUTTONFORGE1 = Util.GetLocaleString("SlashButtonForge1"); -- = "/buttonforge";	--these two identifiers probably shouldn't change, but if need be they can be?!
 	SLASH_BUTTONFORGE2 = Util.GetLocaleString("SlashButtonForge2"); -- = "/bufo";
 	collectgarbage("collect");
@@ -482,18 +482,18 @@ function Util.LoadProfile(ProfileName)
 		Util.SlashShowMessageByLine(Util.GetLocaleString("ProfileNotFound"));
 		return;
 	end
-	
+
 	-- 1. Store the current configuration as the revert configuration for this character, in case the players wishes to go back
 	ButtonForgeSave.UndoProfileBars = Util.deepcopy(ButtonForgeSave.Bars);
-	
+
 	-- 2. Deallocate the current UI
 	for i = #Util.ActiveBars, 1, -1 do
 		Util.DeallocateBar(Util.ActiveBars[i]);
 	end
-	
+
 	-- 3. Apply the profile as the new bars/buttons for this character
 	ButtonForgeSave.Bars = Util.deepcopy(ButtonForgeGlobalProfiles[string.upper(ProfileName)].Bars);
-	
+
 	-- 4. Attach the Bars back to the UI
 	for i = 1, #ButtonForgeSave.Bars do
 		Util.NewBar(0, 0, ButtonForgeSave.Bars[i]);
@@ -520,23 +520,23 @@ function Util.LoadProfileTemplate(ProfileName)
 		Util.SlashShowMessageByLine(Util.GetLocaleString("ProfileNotFound"));
 		return;
 	end
-	
+
 	-- 1. Store the current configuration as the revert configuration for this character, in case the players wishes to go back
 	ButtonForgeSave.UndoProfileBars = Util.deepcopy(ButtonForgeSave.Bars);
-	
+
 	-- 2. Deallocate the current UI
 	for i = #Util.ActiveBars, 1, -1 do
 		Util.DeallocateBar(Util.ActiveBars[i]);
 	end
-	
+
 	-- 3. Apply the profile as the new bars/buttons for this character
 	ButtonForgeSave.Bars = Util.deepcopy(ButtonForgeGlobalProfiles[string.upper(ProfileName)].Bars);
-	
+
 	-- 4. Attach the Bars back to the UI
 	for i = 1, #ButtonForgeSave.Bars do
 		Util.NewBar(0, 0, ButtonForgeSave.Bars[i]);
 	end
-	
+
 	-- 5. Blank all the buttons - this is programatically the easiest way to handle it
 	for i = 1, #Util.ActiveButtons do
 		if (Util.ActiveButtons[i].Mode ~= "bonusaction") then
@@ -560,17 +560,17 @@ end
 function Util.SaveProfile(ProfileName)
 	local NewProfile = {};
 	NewProfile.Name = ProfileName;	-- To capture the case sensitive version
-	
+
 	-- Record this extra info in case it is useful later, probably wont be but could help keep profiles organised with a future update??
 	NewProfile.Icon = "INV_Misc_QuestionMark";	--"Interface/Icons/".. for when/if a gui gets setup it will be good to assign an icon
 	NewProfile.Date = date("%c");
 	NewProfile.Realm = GetRealmName();
 	NewProfile.Char = UnitName("player");
 	NewProfile.Class = UnitClass("player");
-	
+
 	NewProfile.Bars = Util.deepcopy(ButtonForgeSave.Bars)
 	ButtonForgeGlobalProfiles[string.upper(ProfileName)] = NewProfile;
-	
+
 	DEFAULT_CHAT_FRAME:AddMessage(Util.GetLocaleString("SavedProfile"), .5, 1, 0, 1);
 end
 
@@ -584,17 +584,17 @@ function Util.UndoProfile()
 		Util.SlashShowMessageByLine(Util.GetLocaleString("ActionFailedCombatLockdown"));
 		return;
 	end
-	
+
 	if (ButtonForgeSave.UndoProfileBars == nil) then
 		return;
-	end 
-	
+	end
+
 	for i = #Util.ActiveBars, 1, -1 do
 		Util.DeallocateBar(Util.ActiveBars[i]);
 	end
-	
+
 	ButtonForgeSave.Bars = Util.deepcopy(ButtonForgeSave.UndoProfileBars);
-	
+
 
 	for i = 1, #ButtonForgeSave.Bars do
 		Util.NewBar(0, 0, ButtonForgeSave.Bars[i]);
@@ -665,7 +665,7 @@ function Util.CreateBlizzardBarWrappers()
 	Util.BlizBarWrappers[3] = CreateFrame("FRAME", nil, UIParent);
 	Util.BlizBarWrappers[3]:SetPoint("TOPLEFT", MultiBarRightButton1, "TOPLEFT", -Const.I, Const.I + 1);
 	Util.BlizBarWrappers[3]:SetPoint("BOTTOMRIGHT", MultiBarRightButton12, "BOTTOMRIGHT", Const.I, -Const.I + 1);
-	
+
 	Util.BlizBarWrappers[4] = CreateFrame("FRAME", nil, UIParent);
 	Util.BlizBarWrappers[4]:SetPoint("TOPLEFT", MultiBarLeftButton1, "TOPLEFT", -Const.I, Const.I + 1);
 	Util.BlizBarWrappers[4]:SetPoint("BOTTOMRIGHT", MultiBarLeftButton12, "BOTTOMRIGHT", Const.I, -Const.I + 1);
@@ -686,7 +686,7 @@ function Util.NewButton(Parent, ButtonSave, ButtonLocked, TooltipOn, MacroText, 
 	end
 	local NewButton;
 	if (#(Util.InactiveButtons) > 0) then
-		NewButton = table.remove(Util.InactiveButtons);				
+		NewButton = table.remove(Util.InactiveButtons);
 		NewButton:Configure(Parent, ButtonSave, ButtonLocked, TooltipOn, MacroText, KeyBindText);
 	else
 		NewButton = Button.New(Parent, ButtonSave, ButtonLocked, TooltipOn, MacroText, KeyBindText);
@@ -694,7 +694,7 @@ function Util.NewButton(Parent, ButtonSave, ButtonLocked, TooltipOn, MacroText, 
 	end
 
 	table.insert(Util.ActiveButtons, NewButton);
-	
+
 	Util.CallbackEvent("BUTTON_ALLOCATED", NewButton.Widget:GetName());
 	return NewButton;
 end
@@ -752,7 +752,7 @@ function Util.NewBarSave()
 	Save["GUI"] = true;
 	Save["Alpha"] = 1;
 	Save["Buttons"]	= {};
-	
+
 	return Save;
 end
 
@@ -761,7 +761,7 @@ function Util.NewBar(Left, Top, BarSave)
 		return;
 	end
 	local NewBar;
-	
+
 	if (not BarSave) then
 		BarSave = Util.NewBarSave();
 		BarSave["Left"] = Left;
@@ -769,14 +769,14 @@ function Util.NewBar(Left, Top, BarSave)
 		table.insert(ButtonForgeSave.Bars, BarSave);
 		PlaySound(177, "Master");
 	end
-	
+
 	if (#(Util.InactiveBars) > 0) then
 		NewBar = table.remove(Util.InactiveBars);
 		NewBar:Configure(BarSave);
 	else
 		NewBar = Bar.New(BarSave);
 	end
-	
+
 	table.insert(Util.ActiveBars, NewBar);
 	if (NewBar.Cols * NewBar.Rows == 0) then
 		--Failed to allocate buttons, get rid of the bar
@@ -839,7 +839,7 @@ function Util.GetButtonFrameName(Label)
 	if (not _G[Name.."_ButtonFrame"] and Label ~= "") then
 		return Name.."_ButtonFrame";
 	end
-	
+
 	while true do
 		if (not _G[Name..Const.BarSeq.."_ButtonFrame"]) then
 			return Name..Const.BarSeq.."_ButtonFrame";
@@ -914,7 +914,7 @@ function Util.FindClosestPoint(Coord, Points, Offsets, ExcludeBar)
 			end
 		end
 	end
-	
+
 	Bars = Util.BlizBarWrappers;
 	local EnabledBars = Util.BlizEnabledBars;
 	for i = 1, #Bars do
@@ -939,7 +939,7 @@ function Util.FindClosestPoint(Coord, Points, Offsets, ExcludeBar)
 			end
 		end
 	end
-	
+
 	return MatchedBar, MatchedPoint, MinCalc, Shift, MatchedCoord;
 end
 
@@ -979,7 +979,7 @@ function Util.RefreshBarStrata(ForceUpdate)
 			for i = 1, #Bars do
 				Bars[i].ButtonFrame:SetFrameStrata("DIALOG");
 				Bars[i]:SetOrder();	--without a param this will cause a refresh (just in case moving the strata causes the level to change)
-			end		
+			end
 		end
 	end
 end
@@ -1009,7 +1009,7 @@ end
 function Util.RefreshBarGUIStatus()
 	local BarGUIForceOn = (not Util.InCombat) and (ConfigureLayer:IsShown() or DestroyBarOverlay:IsShown() or (IsShiftKeyDown() and Util.CursorAction));
 	local Bars = Util.ActiveBars;
-	if (BarGUIForceOn) then	
+	if (BarGUIForceOn) then
 		for i = 1, #Bars do
 
 			Bars[i]:GUIOn();
@@ -1026,11 +1026,11 @@ end
 
 function Util.SetControlFrameAlphas(Alpha)
 	local Bars = Util.ActiveBars;
-	
+
 	for i = 1, #Bars do
 		Bars[i].ControlFrame:SetAlpha(Alpha);
 	end
-	
+
 end
 
 function Util.RefreshTab(Left, Top)
@@ -1041,7 +1041,7 @@ function Util.RefreshTab(Left, Top)
 	local Label;
 	for i = 1, #Util.ActiveBars do
 		Bar = Util.ActiveBars[i];
-		
+
 		if (math.abs(Bar.ControlFrame:GetLeft() - Left) < 0.01 and math.abs(Bar.ControlFrame:GetTop() - Top) < 0.01) then
 			Count = Count + 1;
 			StackedBar = Bar;
@@ -1067,7 +1067,7 @@ function Util.RefreshTab(Left, Top)
 		StackedBar:ReflowUI();
 		return;
 	end
-	
+
 	local Offset = 0;
 	local HighestBar;
 	local TabFrame = Util.GetTabFrame(Left, Top);
@@ -1184,7 +1184,7 @@ function Util.ProcessSlashCommandParams(Command, Params)
 		end
 		return Values;
 	end
-	
+
 end
 
 --[[Unused function for allowing a more... ]]--
@@ -1239,10 +1239,10 @@ function SlashCmdList.BUTTONFORGE(msg, editbox)
 		if (PreparedCommands[Command] == nil) then
 			return;
 		end
-		
+
 		local Bars = Util.ActiveBars;
 		local Commands = PreparedCommands;
-		
+
 		-- Check the constraint rules
 		-- 1. Only 1 group is allowed
 		-- 2. A rules required's must be present
@@ -1257,7 +1257,7 @@ function SlashCmdList.BUTTONFORGE(msg, editbox)
 				return;
 			end
 			Group = Const.SlashCommands[k].group;
-			
+
 			local Requires = Const.SlashCommands[k].requires;
 			if (Requires) then
 				for k1, v1 in pairs(Requires) do
@@ -1268,7 +1268,7 @@ function SlashCmdList.BUTTONFORGE(msg, editbox)
 					end
 				end
 			end
-			
+
 			local Incompat = Const.SlashCommands[k].incompat;
 			if (Incompat) then
 				for k1, v1 in pairs(Incompat) do
@@ -1285,7 +1285,7 @@ function SlashCmdList.BUTTONFORGE(msg, editbox)
 				end
 			end
 
-			
+
 			local Validate = Const.SlashCommands[k].validate;
 			if (Validate) then
 				if (not Validate(unpack(v))) then
@@ -1295,7 +1295,7 @@ function SlashCmdList.BUTTONFORGE(msg, editbox)
 				end
 			end
 		end
-		
+
 		if (Group == "bar") then
 			if (Commands["-createbar"]) then
 				Util.ApplySlashCommands(Commands);
@@ -1305,7 +1305,7 @@ function SlashCmdList.BUTTONFORGE(msg, editbox)
 					BarName = Commands["-bar"][1];
 				elseif (Commands["-destroybar"]) then
 					BarName = Commands["-destroybar"][1];
-				end		
+				end
 				for i = 1, #Bars do
 					if ((not BarName) or strlower(BarName) == strlower(Bars[i].BarSave["Label"])) then
 						Util.ApplySlashCommands(Commands, Bars[i]);
@@ -1332,7 +1332,7 @@ function Util.ApplySlashCommands(Commands, Bar)
 		end
 		Commands["-rename"] = Commands["-createbar"];	--this could arguably work by having an empty param to createbar but I think it will feel more natural to require a name with this command
 	end
-	
+
 	if (Commands["-destroybar"]) then
 		Util.DeallocateBar(Bar);
 	end
@@ -1340,87 +1340,87 @@ function Util.ApplySlashCommands(Commands, Bar)
 	if (Commands["-macrotext"]) then
 		Bar:SetMacroText(Commands["-macrotext"][1]);
 	end
-	
+
 	if (Commands["-keybindtext"]) then
 		Bar:SetKeyBindText(Commands["-keybindtext"][1]);
 	end
-	
+
 	if (Commands["-tooltips"]) then
 		Bar:SetTooltips(Commands["-tooltips"][1]);
 	end
-	
+
 	if (Commands["-emptybuttons"]) then
 		Bar:SetGridAlwaysOn(Commands["-emptybuttons"][1]);
 	end
-	
+
 	if (Commands["-lockbuttons"]) then
 		Bar:SetButtonsLocked(Commands["-lockbuttons"][1]);
 	end
-	
+
 	if (Commands["-scale"]) then
 		Bar:SetScale(tonumber(Commands["-scale"][1]));
 	end
-	
+
 	if (Commands["-rows"]) then
 		Bar:SetNumButtons(Bar.BarSave["Cols"], tonumber(Commands["-rows"][1]));
 	end
-	
+
 	if (Commands["-cols"]) then
 		Bar:SetNumButtons(tonumber(Commands["-cols"][1]), Bar.BarSave["Rows"]);
 	end
-	
+
 	if (Commands["-coords"]) then
 		Bar:SetPosition(tonumber(Commands["-coords"][1]), tonumber(Commands["-coords"][2]));
 	end
-	
+
 	if (Commands["-rename"]) then
 		Bar:SetLabel(Commands["-rename"][1]);
 	end
-	
+
 	if (Commands["-hidespec1"]) then
 		Bar:SetHSpec1(Commands["-hidespec1"][1]);
-	end			
-				
+	end
+
 	if (Commands["-hidespec2"]) then
 		Bar:SetHSpec2(Commands["-hidespec2"][1]);
 	end
-	
+
 	if (Commands["-hidespec3"]) then
 		Bar:SetHSpec3(Commands["-hidespec3"][1]);
 	end
-	
+
 	if (Commands["-hidespec4"]) then
 		Bar:SetHSpec4(Commands["-hidespec4"][1]);
 	end
-	
+
 	if (Commands["-hidevehicle"]) then
 		Bar:SetHVehicle(Commands["-hidevehicle"][1]);
-	end				
-	
+	end
+
 	if (Commands["-hideoverridebar"]) then
 		Bar:SetHBonusBar(Commands["-hideoverridebar"][1]);
 	end
-	
+
 	if (Commands["-hidepetbattle"]) then
 		Bar:SetHPetBattle(Commands["-hidepetbattle"][1]);
-	end	
+	end
 
 	if (Commands["-vismacro"]) then
 		Bar:SetVD(Commands["-vismacro"][1]);
 	end
-	
+
 	if (Commands["-gui"]) then
 		Bar:SetGUI(Commands["-gui"][1]);
 	end
-	
+
 	if (Commands["-alpha"]) then
 		Bar:SetAlpha(tonumber(Commands["-alpha"][1]));
 	end
-	
+
 	if (Commands["-enabled"]) then
 		Bar:SetEnabled(Commands["-enabled"][1]);
 	end
-	
+
 	if (Commands["-gap"]) then
 		Bar:SetButtonGap(tonumber(Commands["-gap"][1]));
 	end
@@ -1448,22 +1448,22 @@ function Util.ApplySlashCommands(Commands, Bar)
 					Util.GetLocaleString("InfoGUI")..": "..select(2, Bar:GetGUI()).."\n"..
 					Util.GetLocaleString("InfoAlpha")..": "..Bar:GetAlpha().."\n"..
 					Util.GetLocaleString("InfoEnabled")..": "..select(2, Bar:GetEnabled());
-					
+
 		Util.SlashShowMessageByLine(String);
 
 	end
-	
+
 	if (Commands["-technicalinfo"]) then
 		--print out technical info for the bar
 		local String =	Util.GetLocaleString("InfoButtonFrameName")..": "..Bar.ButtonFrame:GetName();
 		Util.SlashShowMessageByLine(String);
 	end
-	
-	
+
+
 	if (Commands["-saveprofile"]) then
 		Util.SaveProfile(Commands["-saveprofile"][1]);
 	end
-	
+
 	if (Commands["-loadprofile"]) then
 		Util.LoadProfile(Commands["-loadprofile"][1]);
 	end
@@ -1471,11 +1471,11 @@ function Util.ApplySlashCommands(Commands, Bar)
 	if (Commands["-loadprofiletemplate"]) then
 		Util.LoadProfileTemplate(Commands["-loadprofiletemplate"][1]);
 	end
-	
+
 	if (Commands["-undoprofile"]) then
 		Util.UndoProfile();
 	end
-	
+
 	if (Commands["-listprofiles"]) then
 		local String = Util.GetLocaleString("BFProfiles").."\n---------------------\n";
 		for k,v in pairs(ButtonForgeGlobalProfiles) do
@@ -1484,38 +1484,38 @@ function Util.ApplySlashCommands(Commands, Bar)
 		String = String.."---------------------\n";
 		Util.SlashShowMessageByLine(String);
 	end
-	
+
 	if (Commands["-deleteprofile"]) then
 		Util.DeleteProfile(Commands["-deleteprofile"][1]);
 	end
-	
+
 	if (Commands["-macrocheckdelay"]) then
 		ButtonForgeGlobalSettings["MacroCheckDelay"] = tonumber(Commands["-macrocheckdelay"][1]);
 	end
-	
+
 	if (Commands["-removemissingmacros"]) then
 		ButtonForgeGlobalSettings["RemoveMissingMacros"] = Commands["-removemissingmacros"][1];
 	end
-	
+
 	if (Commands["-forceoffcastonkeydown"]) then
 		ButtonForgeGlobalSettings["ForceOffCastOnKeyDown"] = Commands["-forceoffcastonkeydown"][1];
 	end
-	
+
 	if (Commands["-usecollectionsfavoritemountbutton"]) then
 		ButtonForgeGlobalSettings["UseCollectionsFavoriteMountButton"] = Commands["-usecollectionsfavoritemountbutton"][1];
 	end
-	
-	
+
+
 	if (Commands["-globalsettings"]) then
 		--print out what the global settings for Button Forge are
 		local String = 	Util.GetLocaleString("InfoMacroCheckDelay")..": "..ButtonForgeGlobalSettings["MacroCheckDelay"].."\n"..
 					Util.GetLocaleString("InfoRemoveMissingMacros")..": "..Util.GetLocaleEnabledDisabled(ButtonForgeGlobalSettings["RemoveMissingMacros"]).."\n"..
 					Util.GetLocaleString("InfoForceOffCastOnKeyDown")..": "..Util.GetLocaleEnabledDisabled(ButtonForgeGlobalSettings["ForceOffCastOnKeyDown"]).."\n"..
 					Util.GetLocaleString("InfoUseCollectionsFavoriteMountButton")..": "..Util.GetLocaleEnabledDisabled(ButtonForgeGlobalSettings["UseCollectionsFavoriteMountButton"]);
-					
+
 		Util.SlashShowMessageByLine(String);
 	end
-	
+
 end
 
 --[[ Store cursor type info for later use --]]
@@ -1548,7 +1548,7 @@ function Util.SetCursor(Command, Data, Subvalue, Subsubvalue)
 		--end
 		C_MountJournal.Pickup(Util.GetMountIndexFromMountID(Data));
 	elseif (Command == "equipmentset") then
-		PickupEquipmentSetByName(Data);
+		C_EquipmentSet.PickupEquipmentSet(C_EquipmentSet.GetEquipmentSetID(Data));
 	elseif (Command == "bonusaction") then
 		local page = 12; --The page for vehicleactionbar
 		if (HasOverrideActionBar()) then
@@ -1588,7 +1588,7 @@ function Util.PostCombatStateUpdate()
 	Util.RefreshGridStatus();
 	Util.RefreshBarStrata();
 	Util.RefreshBarGUIStatus();
-	
+
 	if (Util.DelayedRefreshMacros) then
 		Util.RefreshMacros();
 		Util.DelayedRefreshMacros = nil;
@@ -1639,7 +1639,7 @@ function Util.RightClickSelfCast(Value)
 	if (InCombatLockdown()) then
 		return;
 	end
-	
+
 	if (Value) then
 		for i = 1, #Util.ActiveButtons do
 			Util.ActiveButtons[i].Widget:SetAttribute("unit2", "player");
@@ -1647,9 +1647,9 @@ function Util.RightClickSelfCast(Value)
 	else
 		for i = 1, #Util.ActiveButtons do
 			Util.ActiveButtons[i].Widget:SetAttribute("unit2", nil);
-		end	
+		end
 	end
-	
+
 	ButtonForgeSave["RightClickSelfCast"] = Value;
 end
 
@@ -1715,7 +1715,7 @@ function Util.CacheSpellIndexes()
 	for j = 1, GetNumSpellTabs() do
 		total = total + select(4, GetSpellTabInfo(j));
 	end
-	
+
 	for i = total, 1, -1 do
 		ItemType, Id = GetSpellBookItemInfo(i, BOOKTYPE_SPELL);
 		--local Name, Rank, Icon, PowerCost, IsFunnel, PowerType = GetSpellInfo(i, BOOKTYPE_SPELL);
@@ -1723,13 +1723,13 @@ function Util.CacheSpellIndexes()
 		local NameRank = Util.GetFullSpellName(Name, Rank);
 		if (ItemType == "SPELL") then
 			NewSI[NameRank] = i;
-			
+
 		elseif (ItemType == "FLYOUT") then
 			NewSI["FLYOUT"..Id] = i;
 
 		elseif (ItemType == nil) then
 			break;
-			
+
 		end
 
 --		if (not Util.SpellIndex[NameRank]) then
@@ -1767,12 +1767,12 @@ function Util.CachePetSpellIndexes()
 	end
 
 	Util.PetSpellIndex = NewPSI;
-	
+
 end
 
 function Util.LookupSpellIndex(NameRank)
 	local Index = Util.SpellIndex[NameRank];
-	
+
 	if (Index) then
 		return Index, BOOKTYPE_SPELL;
 	end
@@ -1784,7 +1784,7 @@ end
 
 function Util.LookupNewSpellIndex(NameRank)
 	local Index = Util.NewSpellIndex[NameRank];
-	
+
 	if (Index) then
 		return Index, BOOKTYPE_SPELL;
 	end
@@ -1869,7 +1869,7 @@ function Util.CacheCompanions()
 		end
         Util.Critters[Name] = i;
     end]]
-	
+
     --[[Util.Mounts = {};
     for i = 1, C_MountJournal.GetNumMounts() do
         local Name, Id = C_MountJournal.GetDisplayedMountInfo(i);
@@ -1883,7 +1883,7 @@ end
 
 function Util.LookupCompanion(Name)
     if (Util.Critters[Name]) then
-        return "CRITTER", Util.Critters[Name]; 
+        return "CRITTER", Util.Critters[Name];
     elseif (Util.Mounts[Name]) then
         return "MOUNT", Util.Mounts[Name];
     else
@@ -1930,7 +1930,7 @@ function Util.CacheBagItems()
 			end
 		end
 	end
-	
+
 	Util.BagItemNameIndexes = BagItemNameIndexes;
 	Util.BagItemIdIndexes = BagItemIdIndexes;
 	Util.BagItemNameId = BagItemNameId;
@@ -1951,7 +1951,7 @@ function Util.CacheInvItems()
 			InvItemNameId[ItemName] = ItemId;
 		end
 	end
-	
+
 	Util.InvItemNameIndexes = InvItemNameIndexes;
 	Util.InvItemIdIndexes = InvItemIdIndexes;
 	Util.InvItemNameId = InvItemNameId;
@@ -1996,7 +1996,7 @@ function Util.LookupItemEquippedSlot(ItemId)
 	return nil;
 end
 
---[[ Look for the item in the players inventory 
+--[[ Look for the item in the players inventory
 Notes: Don't use this function, the above functions are better
 Reason: In the simple case profiling shows that the performance hit is neglible from doing this scan...
 That is until GetItemInfo is used to get the name of the item
@@ -2077,7 +2077,7 @@ function Util.UpdateButtonClickHandling()
 		Util.DelayedUpdateButtonClickHandling = true;
 		return;
 	end
-	
+
 	for i = 1, #Util.ActiveButtons do
 		Util.ActiveButtons[i]:SetupActionButtonClick();
 	end
@@ -2102,20 +2102,20 @@ function Util.RefreshMacros()
 		Util.DelayedRefreshMacros = true;
 		return;
 	end
-	
+
 	if (Util.UpdateMacroEventCount < 2) then
 		--Not all macros have been loaded yet so don't refresh
 
 		return;
 	end
-	
+
 	local AccMacros, CharMacros = GetNumMacros();
 	if (not Util.MacroCount) then
 		Util.MacroCount = AccMacros + CharMacros;
 	elseif (Util.MacroCount > AccMacros + CharMacros) then
 		Util.MacroDeleted = true;
 	end
-	
+
 
 	for i = 1, #Util.ActiveButtons do
 		Util.ActiveButtons[i]:RefreshMacro();
@@ -2166,7 +2166,7 @@ function Util.RefreshOnUpdateFunction()
 	local FunctionString =
 	[[return function (self, Elapsed)
 	]];
-	
+
 	for i = 1, #(Util.ActiveMacros) do
 		if (Util.ActiveMacros[i].Mode == "macro") then
 			ConcatMacros = ConcatMacros..":"..(GetMacroBody(Util.ActiveMacros[i].MacroIndex) or "");
@@ -2174,12 +2174,12 @@ function Util.RefreshOnUpdateFunction()
 	end
 
 	ConcatMacros = strupper(ConcatMacros);
-	
+
 	--The following tests should be performed the buttons are updated
 	if (strfind(ConcatMacros, "FLYING", 1, true)) then FunctionString = FunctionString..Util.SnippetIsFlying(); end
 	if (strfind(ConcatMacros, "MOUNTED", 1, true)) then FunctionString = FunctionString..Util.SnippetIsMounted(); end
-	FunctionString = FunctionString..Util.SnippetRefreshButtons();	
-	
+	FunctionString = FunctionString..Util.SnippetRefreshButtons();
+
 	--The following tests need to be performed after the buttons are updated (so that the buttons can be updated at the next onupdate)
 	if (strfind(ConcatMacros, "FLYABLE", 1, true)) then FunctionString = FunctionString..Util.SnippetIsFlyable(); end
 	if (strfind(ConcatMacros, "MOUSEOVER", 1, true)) then FunctionString = FunctionString..Util.SnippetMouseOver();	end
@@ -2311,7 +2311,7 @@ function Util.UnregisterCallback(Callback, Arg)
 			table.remove(Util.CallbackFunctions, i);
 			table.remove(Util.CallbackArgs, i);
 		end
-	end	
+	end
 end
 
 local CallbackFunc;
@@ -2337,11 +2337,11 @@ end
 --This one breaks with the philosophy of the Button implementation but for now should be sufficient to support the API function
 function Util.GetButtonActionInfo(ButtonName)
 	local Button = Util.ButtonWidgetMap[_G[ButtonName]];
-	
+
 	if (not Button) then
 		return;
 	end
-	
+
 	if (Button.Mode == "spell") then
 		return "spell", Button.SpellId, Button.SpellBook;
 	elseif (Button.Mode == "item") then
@@ -2359,15 +2359,15 @@ function Util.GetButtonActionInfo(ButtonName)
 		return "battlepet", Button.BattlePetId;
 	end
 end
-	
+
 --This one breaks with the philosophy of the Button implementation but for now should be sufficient to support the API function
 function Util.GetButtonActionInfo2(ButtonName)
 	local Button = Util.ButtonWidgetMap[_G[ButtonName]];
-	
+
 	if (not Button) then
 		return;
 	end
-	
+
 	--[[
 		"spell", SpellName, SpellSubName, SpellId, SpellIndex, SpellBook
 		"item", ItemId, ItemName
@@ -2378,7 +2378,7 @@ function Util.GetButtonActionInfo2(ButtonName)
 		"bonusaction", BonusActionSlot
 		"customaction", CustomActionName
 	--]]
-		
+
 	if (Button.Mode == "spell") then
 		local Rank = select(2, GetSpellInfo(Button.SpellId));
 		return "spell", Button.SpellName, Rank, Button.SpellId, Util.LookupSpellIndex(Button.SpellNameRank), Button.SpellBook;
@@ -2466,12 +2466,12 @@ end
 ]]
 
 --[[------------------------------------------------
-	
+
 --------------------------------------------------]]
 
 function Util.GetMountIDFromName(Name)
 	local Num = C_MountJournal.GetNumMounts();
-	
+
 	for i = 1, Num do
 		if (C_MountJournal.GetDisplayedMountInfo(i) == Name) then
 			return select(12, C_MountJournal.GetDisplayedMountInfo(i));
@@ -2504,7 +2504,7 @@ end
 --[[
 	Copied from Bliz implementation
 	The difference is I use the effective alpha to override the bling and edge settings, and also adjust the swipe alpha
-	
+
 	I suspect this will need fine tuning for Masque and perhaps OmniCC, but that can be down the track
 ]]
 function Util.CooldownFrame_SetTimer(self, start, duration, enable, charges, maxCharges, forceShowDrawEdge)
@@ -2534,13 +2534,12 @@ end
 
 function Util.LookupEquipmentSetIndex(EquipmentSetID)
 
-	local Total = GetNumEquipmentSets();
+	local Total = C_EquipmentSet.GetNumEquipmentSets();
 	for i = 1, Total do
-		if (select(3, GetEquipmentSetInfo(i)) == EquipmentSetID) then
+		if (select(3, C_EquipmentSet.GetEquipmentSetInfo(i)) == EquipmentSetID) then
 			return i;
 		end
 	end
 	return nil;
-	
-end
 
+end
